@@ -38,6 +38,6 @@ It includes optional improvements like graceful shutdown handling.
 `npm start`
 
 
-**Screenshot of the application: **
+**Application preview**
 
 ![image](https://github.com/user-attachments/assets/4b18371f-e2bb-43e9-ad59-f4be3e3a88f4)

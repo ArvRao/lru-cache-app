@@ -17,11 +17,22 @@ It includes optional improvements like graceful shutdown handling.
 
 `go mod download`
 
-3. Run the application on localhost at port 3000
+3. Run the application on localhost at port 3001
 
 `go run *.go`
 
 ---
 
 ### Frontend
+> Make sure to have npm installed in local machine
+1. Navigate to `/frontend` directory from root directory:
 
+`cd /frontend`
+
+2. Install the necessary dependencies
+ 
+`npm install`
+
+3. Run the application on localhost at port 3000
+
+`npm start`

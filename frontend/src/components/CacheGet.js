@@ -8,7 +8,7 @@ function CacheGet() {
 
     const handleGet = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/cache/${key}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/cache/${key}`);
             setValue(response.data.value);
             setError('');
         } catch (err) {

@@ -9,7 +9,7 @@ function CacheSet() {
 
     const handleSet = async () => {
         try {
-            await axios.post('http://localhost:3001/cache', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/cache`, {
                 key,
                 value,
                 ttl: ttl ? parseInt(ttl, 10) : undefined,

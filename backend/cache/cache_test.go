@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -84,5 +85,44 @@ func TestLRUCache_UpdateAndMoveToFront(t *testing.T) {
 
 	if val, ok := cache.Get("c"); !ok || val != "value3" {
 		t.Errorf("Expected value3, got %v", val)
+	}
+}
+
+func TestLRUCache_MaxCapacity(t *testing.T) {
+	cache := NewLRUCache(1024)
+
+	// Add 1024 items to the cache
+	for i := 0; i < 1024; i++ {
+		key := fmt.Sprintf("key%d", i)
+		cache.Set(key, fmt.Sprintf("value%d", i), 5*time.Second)
+	}
+
+	// Check that all 1024 items are present
+	for i := 0; i < 1024; i++ {
+		key := fmt.Sprintf("key%d", i)
+		if val, ok := cache.Get(key); !ok || val != fmt.Sprintf("value%d", i) {
+			t.Errorf("Expected %v, got %v", fmt.Sprintf("value%d", i), val)
+		}
+	}
+
+	// Add one more item, which should trigger the eviction of "key0"
+	cache.Set("key1024", "value1024", 5*time.Second)
+
+	// Check that "key0" has been evicted
+	if _, ok := cache.Get("key0"); ok {
+		t.Errorf("Expected key0 to be evicted")
+	}
+
+	// Check that the last added item is present
+	if val, ok := cache.Get("key1024"); !ok || val != "value1024" {
+		t.Errorf("Expected value1024, got %v", val)
+	}
+
+	// Optionally, check that all other keys from "key1" to "key1023" are still present
+	for i := 1; i < 1024; i++ {
+		key := fmt.Sprintf("key%d", i)
+		if val, ok := cache.Get(key); !ok || val != fmt.Sprintf("value%d", i) {
+			t.Errorf("Expected %v, got %v", fmt.Sprintf("value%d", i), val)
+		}
 	}
 }

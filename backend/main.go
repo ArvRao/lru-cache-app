@@ -11,11 +11,18 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
 	// Initialize Fiber app
 	app := fiber.New()
+
+	// Enable CORS for all routes
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "https://lru-cache-app.onrender.com", // You can specify multiple origins separated by commas
+		AllowMethods: "GET,POST",                           // Allow only GET and POST methods
+	}))
 
 	// Register routes
 	app.Get("/", func(c *fiber.Ctx) error {

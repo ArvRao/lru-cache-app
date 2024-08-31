@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
+	"log"
 	"lru-cache-app/cache"
 	"lru-cache-app/handlers"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,16 +17,36 @@ func main() {
 	// Initialize Fiber app
 	app := fiber.New()
 
-	// Initialize LRU cache with a capacity of 1024
-	cache := cache.NewLRUCache(1024)
-
 	// Register routes
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Welcome to LRU Cache Application. Hope you'll enjoy it!")
+		return c.SendString("Welcome to LRU Cache Application")
 	})
+	// Initialize LRU cache with a capacity of 1024
+	cache := cache.NewLRUCache(1024)
 	app.Get("/cache/:key", handlers.GetCacheValue(cache))
 	app.Post("/cache", handlers.SetCacheValue(cache))
 
-	// Start the server on port 3000
-	app.Listen(":3000")
+	// Start server in a goroutine
+	go func() {
+		if err := app.Listen(":3000"); err != nil {
+			log.Fatalf("Server failed to start: %v", err)
+		}
+	}()
+
+	// Set up graceful shutdown
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+
+	// Block until we receive a signal
+	<-c
+
+	log.Println("Gracefully shutting down...")
+	_, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := app.Shutdown(); err != nil {
+		log.Fatalf("Server shutdown failed: %v", err)
+	}
+
+	log.Println("Server exited")
 }

@@ -36,3 +36,8 @@ It includes optional improvements like graceful shutdown handling.
 3. Run the application on localhost at port 3000
 
 `npm start`
+
+
+**Screenshot of the application: **
+
+![image](https://github.com/user-attachments/assets/4b18371f-e2bb-43e9-ad59-f4be3e3a88f4)

@@ -8,7 +8,7 @@ function CacheGet() {
 
     const handleGet = async () => {
         try {
-            const response = await axios.get(`https://lru-cache-app.onrender.com/cache/${key}`);
+            const response = await axios.get(`http://localhost:3001/cache/${key}`);
             setValue(response.data.value);
             setError('');
         } catch (err) {

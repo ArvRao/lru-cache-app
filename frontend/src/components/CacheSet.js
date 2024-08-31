@@ -9,7 +9,7 @@ function CacheSet() {
 
     const handleSet = async () => {
         try {
-            await axios.post('https://lru-cache-app.onrender.com/cache', {
+            await axios.post('http://localhost:3001/cache', {
                 key,
                 value,
                 ttl: ttl ? parseInt(ttl, 10) : undefined,

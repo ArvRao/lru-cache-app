@@ -20,8 +20,8 @@ func main() {
 
 	// Enable CORS for all routes
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "https://lru-cache-app.onrender.com", // You can specify multiple origins separated by commas
-		AllowMethods: "GET,POST",                           // Allow only GET and POST methods
+		AllowOrigins: "http://localhost:3000", // You can specify multiple origins separated by commas
+		AllowMethods: "GET,POST",              // Allow only GET and POST methods
 	}))
 
 	// Register routes
